@@ -1,0 +1,11 @@
+{
+  "expo": {
+    "name": "mm-rn-labb",
+    "slug": "mm-rn-labb",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  },
+  "name": "mm-rn-labb"
+}
