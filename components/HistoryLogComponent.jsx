@@ -3,25 +3,20 @@ import { View, ScrollView, Text, StyleSheet } from 'react-native';
 
 const HistoryLog = ({rolls}) => {
     
-    console.log(rolls)
-
-    if (rolls.length > 1) {  
-        return (    
-            <View style={styles.historyContainer}>
-            <ScrollView style={styles.rollsList}>
-                {rolls.slice(1).reverse().map((roll, index) =>
-                roll ? 
-                    <Text key={index} style={styles.rollsListText}>You rolled <Text style={styles.boldText}>{roll}</Text></Text>
-                   : <Text key={index}></Text>
-                )}
-            </ScrollView>
-        </View>
-        )}
-        else {
-            return (
-                <Text></Text>
-            )
-        }        
+    return (    
+        <View style={styles.historyContainer}>
+            {rolls.length > 0 ? 
+                <ScrollView style={styles.rollsList}>
+                    {rolls.slice(0).reverse().map((roll, index) =>
+                    roll ? 
+                        <Text key={index} style={styles.rollsListText}>You rolled <Text style={styles.boldText}>{roll}</Text></Text>
+                    : <Text key={index}></Text>
+                    )}
+                </ScrollView>
+            : <Text></Text> 
+            }  
+        </View>   
+    )
 }
 
 const styles = StyleSheet.create({

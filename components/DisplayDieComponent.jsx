@@ -6,19 +6,19 @@ const DisplayDie = ({sideNumber}) => {
     const displayDie = (sideNumber) => {
         switch(sideNumber) {
           case 4:
-            return require('./img/4sided.png')
+            return require('../img/4sided.png')
             break;
           case 6:
-            return require('./img/6sided.png')
+            return require('../img/6sided.png')
             break;
           case 8:
-            return require('./img/8sided.png')
+            return require('../img/8sided.png')
             break;
           case 10:
-            return require('./img/10sided.png')
+            return require('../img/10sided.png')
             break;
           case 12:
-            return require('./img/12sided.png')
+            return require('../img/12sided.png')
             break;
           default:
             <Text>No die displayed</Text>

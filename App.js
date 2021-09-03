@@ -1,31 +1,25 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
-import DisplayDie from './DisplayDie';
-import HistoryLog from './HistoryLog';
-import SidesButton from './SidesButton';
+import DisplayDie from './components/DisplayDieComponent';
+import HistoryLog from './components/HistoryLogComponent';
+import RollButton from './components/RollButtonComponent';
+import SidesButton from './components/SidesButtonComponent';
 
 export default function App() {
   const [dieNumber, setDieNumber] = useState(null);
   const [sideNumber, setSideNumber] = useState(null);
   const [rolls, setRolls] = useState([]);
 
-  const getDieRoll = () => {
-    setDieNumber(Math.floor(Math.random() * sideNumber) + 1);
-  }
-
-  useEffect(() => {
-    setRolls(rolls => [...rolls, dieNumber]);
-  }, [dieNumber])
-
   const getSides = (sideNumber) => {
     setSideNumber(sideNumber);
-    setDieNumber(null);
+    setRolls((rolls) => []);
+    setDieNumber();
   }
 
   return (
     <View style={styles.container}>
-      <Text>Choose amount of sides:</Text>
+      <Text style={styles.headerText}>Choose amount of sides:</Text>
       <View style={styles.sidesContainer}>
         <SidesButton 
           getSides={() => getSides(4)}
@@ -53,17 +47,17 @@ export default function App() {
         <Text style={styles.dieText}>{dieNumber}</Text>
       </View>
 
-      {sideNumber ? <Pressable onPress={() => {
-          getDieRoll()
-        }}>
-        {({ pressed }) => (
-          <Text style={styles.text}>
-            {pressed ? 'Die Rolled!' : 'Roll Die!'}
-          </Text>
-        )}
-      </Pressable> : null}
-
-      <HistoryLog rolls={rolls} />
+      {sideNumber ? 
+        <RollButton
+          setDieNumber={setDieNumber}
+          sideNumber={sideNumber}
+          setRolls={setRolls}
+          dieNumber={dieNumber}
+       /> 
+       : null}
+      {sideNumber ? <HistoryLog rolls={rolls} /> : null}
+      
+      
       
       <StatusBar style="auto" />
     </View>
@@ -79,6 +73,9 @@ const styles = StyleSheet.create({
   },
   sidesContainer: {
     flexDirection: 'row' 
+  },
+  headerText: {
+    fontSize: 'large'
   },
   amountText: {
     padding: 3,
