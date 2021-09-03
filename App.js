@@ -1,79 +1,60 @@
 import { StatusBar } from 'expo-status-bar';
-import React, { useState } from 'react';
-import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
+import DisplayDie from './DisplayDie';
+import HistoryLog from './HistoryLog';
+import SidesButton from './SidesButton';
 
 export default function App() {
   const [dieNumber, setDieNumber] = useState(null);
   const [sideNumber, setSideNumber] = useState(null);
+  const [rolls, setRolls] = useState([]);
 
-  const getRandomInt = () => {
-    setDieNumber(Math.floor(Math.random() * sideNumber) + 1)
+  const getDieRoll = () => {
+    setDieNumber(Math.floor(Math.random() * sideNumber) + 1);
   }
+
+  useEffect(() => {
+    setRolls(rolls => [...rolls, dieNumber]);
+  }, [dieNumber])
 
   const getSides = (sideNumber) => {
-    setSideNumber(sideNumber)
-    setDieNumber(null)
-  }
-
-  const displayDie = (sideNumber) => {
-    switch(sideNumber) {
-      case 4:
-        return require('./img/4sided.png')
-        break;
-      case 6:
-        return require('./img/6sided.png')
-        break;
-      case 8:
-        return require('./img/8sided.png')
-        break;
-      case 10:
-        return require('./img/10sided.png')
-        break;
-      case 12:
-        return require('./img/12sided.png')
-        break;
-      default:
-        <Text>No image</Text>
-    }
+    setSideNumber(sideNumber);
+    setDieNumber(null);
   }
 
   return (
     <View style={styles.container}>
       <Text>Choose amount of sides:</Text>
       <View style={styles.sidesContainer}>
-        <Pressable onPress={() => {
-          getSides(4)
-        }}>
-          <Text style={styles.amountText}>4</Text>
-        </Pressable>
-        <Pressable onPress={() => {
-          getSides(6)
-        }}>
-          <Text style={styles.amountText}>6</Text>
-        </Pressable>
-        <Pressable onPress={() => {
-          getSides(8)
-        }}>
-          <Text style={styles.amountText}>8</Text>
-        </Pressable>
-        <Pressable onPress={() => {
-          getSides(10)
-        }}>
-          <Text style={styles.amountText}>10</Text>
-        </Pressable>
-        <Pressable onPress={() => {
-          getSides(12)
-        }}>
-          <Text style={styles.amountText}>12</Text>
-        </Pressable>
+        <SidesButton 
+          getSides={() => getSides(4)}
+          amountOfSides={4}
+        />
+        <SidesButton 
+          getSides={() => getSides(6)}
+          amountOfSides={6}
+        />
+        <SidesButton 
+          getSides={() => getSides(8)}
+          amountOfSides={8}
+        />
+        <SidesButton 
+          getSides={() => getSides(10)}
+          amountOfSides={10}
+        />
+        <SidesButton 
+          getSides={() => getSides(12)}
+          amountOfSides={12}
+        />
       </View>
       <View style={styles.logBox}>
-        {sideNumber ? <Image source={displayDie(sideNumber)} style={styles.dieImg} /> : null}
-      
+        {sideNumber ? <DisplayDie sideNumber={sideNumber} /> : null}
         <Text style={styles.dieText}>{dieNumber}</Text>
       </View>
+
       {sideNumber ? <Pressable onPress={() => {
-          getRandomInt()
+          getDieRoll()
         }}>
         {({ pressed }) => (
           <Text style={styles.text}>
@@ -81,6 +62,8 @@ export default function App() {
           </Text>
         )}
       </Pressable> : null}
+
+      <HistoryLog rolls={rolls} />
       
       <StatusBar style="auto" />
     </View>
